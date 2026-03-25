@@ -77,12 +77,8 @@ export default function Gallery({ works }: { works: Work[] }) {
             ‹
           </button>
 
-          {/* Image + year + caption */}
+          {/* Image + caption */}
           <div style={{ display: 'flex', flexDirection: 'column', maxHeight: '100vh', maxWidth: 'calc(100vw - 120px)' }}>
-            <p style={{ fontFamily: SERIF, fontSize: 13, color: '#9a9a9a', margin: '0 0 6px 0', alignSelf: 'flex-start' }}>
-              {activeYear}
-            </p>
-
             {imageUrl && current ? (
               <img
                 ref={imgRef}
@@ -116,11 +112,14 @@ export default function Gallery({ works }: { works: Work[] }) {
           </button>
         </div>
 
-        {/* Fergus Binns — fixed 60px from top, left */}
+        {/* Fergus Binns + year — fixed top left */}
         <div style={{ position: 'fixed', left: 40, top: 30, zIndex: 20, pointerEvents: 'none' }}>
           <h1 style={{ fontFamily: SERIF, fontSize: 25, fontWeight: 400, color: '#7a7a7a', margin: 0 }}>
             Fergus Binns
           </h1>
+          <p style={{ fontFamily: SERIF, fontSize: 13, color: '#b0b0b0', margin: '4px 0 0 0' }}>
+            {activeYear}
+          </p>
         </div>
 
         {/* Nav — fixed 80px from top, right aligned */}
@@ -139,7 +138,10 @@ export default function Gallery({ works }: { works: Work[] }) {
       {/* Mobile layout */}
       <div className="md:hidden">
         <header className="px-5 pt-8 pb-4 flex items-center justify-between">
-          <h1 style={{ fontFamily: SERIF, fontSize: 20, fontWeight: 400, color: '#7a7a7a', margin: 0 }}>Fergus Binns</h1>
+          <div>
+            <h1 style={{ fontFamily: SERIF, fontSize: 20, fontWeight: 400, color: '#7a7a7a', margin: 0 }}>Fergus Binns</h1>
+            <p style={{ fontFamily: SERIF, fontSize: 12, color: '#b0b0b0', margin: '3px 0 0 0' }}>{activeYear}</p>
+          </div>
           <MobileMenu years={years} activeYear={activeYear} onYearChange={selectYear} />
         </header>
         <div className="px-5 pb-16 flex flex-col gap-10">
@@ -147,7 +149,6 @@ export default function Gallery({ works }: { works: Work[] }) {
             const url = work.image ? urlFor(work.image).width(800).fit('max').url() : null
             return (
               <div key={work._id}>
-                <p className="text-sm text-[#9a9a9a] mb-2" style={{ fontFamily: SERIF }}>{activeYear}</p>
                 {url && <img src={url} alt={work.title || 'Artwork'} style={{ width: '100%', height: 'auto' }} />}
                 <div className="mt-3">
                   <p className="text-sm text-[#6a6a6a] leading-relaxed" style={{ fontFamily: SERIF }}>
