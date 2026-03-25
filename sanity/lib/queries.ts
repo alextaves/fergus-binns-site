@@ -1,0 +1,16 @@
+import { client } from './client'
+
+export async function getAllWorks() {
+  return client.fetch(
+    `*[_type == "work"] | order(year desc, _createdAt asc) {
+      _id, title, year, medium, dimensions, image, pageUrl
+    }`
+  )
+}
+
+export async function getYears(): Promise<string[]> {
+  const years = await client.fetch(
+    `array::unique(*[_type == "work"].year) | order(@ desc)`
+  )
+  return years.filter(Boolean)
+}
