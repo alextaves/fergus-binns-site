@@ -14,3 +14,11 @@ export async function getYears(): Promise<string[]> {
   )
   return years.filter(Boolean)
 }
+
+export async function getCV() {
+  return client.fetch(
+    `*[_type == "cv" && _id == "cv-singleton"][0] {
+      bio, education, soloExhibitions, groupExhibitions, awards, collections
+    }`
+  )
+}

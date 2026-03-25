@@ -53,6 +53,13 @@ export default defineConfig({
 
             S.divider(),
 
+            // Info / CV
+            S.listItem()
+              .title('Info / CV')
+              .child(S.document().schemaType('cv').documentId('cv-singleton')),
+
+            S.divider(),
+
             // Quick links
             S.listItem()
               .title('Add New Work')
