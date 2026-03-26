@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useRef, useEffect } from 'react'
+import { useState, useCallback, useRef, useEffect, WheelEvent } from 'react'
 import Image from 'next/image'
 import { urlFor } from '@/sanity/lib/image'
 import WorkDropdown from './WorkDropdown'
@@ -24,6 +24,7 @@ export default function Gallery({ works }: { works: Work[] }) {
   const [index, setIndex] = useState(0)
   const [imageTop, setImageTop] = useState(80)
   const imgRef = useRef<HTMLImageElement>(null)
+  const scrollCooldown = useRef(false)
 
   const yearWorks = works.filter((w) => w.year === activeYear)
   const current = yearWorks[index] ?? null
@@ -40,6 +41,14 @@ export default function Gallery({ works }: { works: Work[] }) {
     setActiveYear(year)
     setIndex(0)
   }
+
+  const handleWheel = useCallback((e: React.WheelEvent) => {
+    if (scrollCooldown.current) return
+    scrollCooldown.current = true
+    setTimeout(() => { scrollCooldown.current = false }, 600)
+    if (e.deltaY > 0) next()
+    else prev()
+  }, [next, prev])
 
   // Measure image top so we can position the header halfway between screen top and image top
   useEffect(() => {
@@ -66,16 +75,7 @@ export default function Gallery({ works }: { works: Work[] }) {
       {/* Desktop layout */}
       <div className="hidden md:block">
         {/* Full viewport centered container */}
-        <div style={{ position: 'fixed', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-
-          {/* Prev arrow */}
-          <button
-            onClick={prev}
-            style={{ position: 'absolute', left: 24, top: '50%', transform: 'translateY(-50%)', color: '#c0c0c0', fontSize: 36, background: 'none', border: 'none', cursor: 'pointer', zIndex: 10 }}
-            aria-label="Previous"
-          >
-            ‹
-          </button>
+        <div onWheel={handleWheel} style={{ position: 'fixed', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
 
           {/* Image + caption */}
           <div style={{ display: 'flex', flexDirection: 'column', maxHeight: '100vh', maxWidth: 'calc(100vw - 120px)' }}>
@@ -102,14 +102,6 @@ export default function Gallery({ works }: { works: Work[] }) {
             )}
           </div>
 
-          {/* Next arrow */}
-          <button
-            onClick={next}
-            style={{ position: 'absolute', right: 24, top: '50%', transform: 'translateY(-50%)', color: '#c0c0c0', fontSize: 36, background: 'none', border: 'none', cursor: 'pointer', zIndex: 10 }}
-            aria-label="Next"
-          >
-            ›
-          </button>
         </div>
 
         {/* Fergus Binns + year — fixed top left */}
