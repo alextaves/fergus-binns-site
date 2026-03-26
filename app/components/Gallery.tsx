@@ -78,7 +78,7 @@ export default function Gallery({ works }: { works: Work[] }) {
         <div onWheel={handleWheel} style={{ position: 'fixed', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
 
           {/* Image + caption */}
-          <div style={{ display: 'flex', flexDirection: 'column', maxHeight: '100vh', maxWidth: 'calc(100vw - 120px)' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', maxHeight: '100vh', maxWidth: 'calc(100vw - 80px)' }}>
             {imageUrl && current ? (
               <img
                 ref={imgRef}
