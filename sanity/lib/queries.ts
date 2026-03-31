@@ -15,6 +15,18 @@ export async function getYears(): Promise<string[]> {
   return years.filter(Boolean)
 }
 
+export async function getHomepageWork() {
+  return client.fetch(
+    `*[_type == "work" && isHomepage == true][0] { _id, title, medium, dimensions, year, image }`
+  )
+}
+
+export async function getMobileHomepageWork() {
+  return client.fetch(
+    `*[_type == "work" && isMobileHomepage == true][0] { _id, title, medium, dimensions, image }`
+  )
+}
+
 export async function getCV() {
   return client.fetch(
     `*[_type == "cv" && _id == "cv-singleton"][0] {

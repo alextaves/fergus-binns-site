@@ -36,6 +36,18 @@ export const work = defineType({
       title: 'Original Page URL',
       type: 'url',
     }),
+    defineField({
+      name: 'isHomepage',
+      title: 'Homepage Hero',
+      type: 'boolean',
+      description: 'Show this work as the homepage hero image (desktop)',
+    }),
+    defineField({
+      name: 'isMobileHomepage',
+      title: 'Homepage Hero (Mobile & Tablet)',
+      type: 'boolean',
+      description: 'Show this work as the homepage hero image on mobile and tablet',
+    }),
   ],
   preview: {
     select: {

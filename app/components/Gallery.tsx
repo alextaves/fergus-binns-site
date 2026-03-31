@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback, useRef, useEffect } from 'react'
-import Image from 'next/image'
+import { useSearchParams } from 'next/navigation'
 import { urlFor } from '@/sanity/lib/image'
 import WorkDropdown from './WorkDropdown'
 import Footer from './Footer'
@@ -20,10 +20,25 @@ const SANS = 'Helvetica Neue, Helvetica, Arial, sans-serif'
 
 export default function Gallery({ works }: { works: Work[] }) {
   const years = Array.from(new Set(works.map((w) => w.year))).sort((a, b) => Number(b) - Number(a))
-  const [activeYear, setActiveYear] = useState(years[0] ?? '')
+  const searchParams = useSearchParams()
+  const initialYear = searchParams.get('year') ?? years[0] ?? ''
+  const [activeYear, setActiveYear] = useState(years.includes(initialYear) ? initialYear : years[0] ?? '')
   const [index, setIndex] = useState(0)
   const [imageTop, setImageTop] = useState(80)
   const imgRef = useRef<HTMLImageElement>(null)
+  const headerRef = useRef<HTMLDivElement>(null)
+  const footerRef = useRef<HTMLDivElement>(null)
+  const [headerBottom, setHeaderBottom] = useState(80)
+  const [footerHeight, setFooterHeight] = useState(65)
+  const [isDesktop, setIsDesktop] = useState(false)
+
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 1025px)')
+    setIsDesktop(mq.matches)
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
 
   const yearWorks = works.filter((w) => w.year === activeYear)
   const current = yearWorks[index] ?? null
@@ -49,6 +64,8 @@ export default function Gallery({ works }: { works: Work[] }) {
         const rect = imgRef.current.getBoundingClientRect()
         setImageTop(rect.top)
       }
+      if (headerRef.current) setHeaderBottom(headerRef.current.getBoundingClientRect().bottom)
+      if (footerRef.current) setFooterHeight(footerRef.current.offsetHeight)
     }
     measure()
     window.addEventListener('resize', measure)
@@ -65,59 +82,79 @@ export default function Gallery({ works }: { works: Work[] }) {
     <main className="min-h-screen">
 
       {/* Desktop layout */}
-      <div className="hidden md:block">
+      <div style={{ display: isDesktop ? 'block' : 'none' }}>
         {/* Full viewport centered container */}
         <div style={{ position: 'fixed', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
 
           {/* Prev arrow */}
           <button
             onClick={prev}
-            style={{ position: 'absolute', left: 24, top: '50%', transform: 'translateY(-50%)', color: '#c0c0c0', fontSize: 56, lineHeight: 1, background: 'none', border: 'none', cursor: 'pointer', zIndex: 10 }}
+            style={{ position: 'absolute', left: 24, top: '50%', transform: 'translateY(-50%)', color: '#c0c0c0', background: 'none', border: 'none', cursor: 'pointer', zIndex: 10, padding: 0, display: 'flex', alignItems: 'center' }}
             aria-label="Previous"
           >
-            ‹
+            <svg width="13" height="22" viewBox="0 0 13 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polyline points="11,1 1,11 11,21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
           </button>
 
           {/* Image + caption */}
-          <div style={{ display: 'flex', flexDirection: 'column', maxHeight: '100vh', maxWidth: 'calc(100vw - 120px)' }}>
-            {imageUrl && current ? (
-              <img
-                ref={imgRef}
-                src={imageUrl}
-                alt={current.title || 'Artwork'}
-                style={{ maxWidth: '100%', maxHeight: 'calc(100vh - 160px)', width: 'auto', height: 'auto', objectFit: 'contain', display: 'block' }}
-                onLoad={() => {
-                  if (imgRef.current) setImageTop(imgRef.current.getBoundingClientRect().top)
-                }}
-              />
-            ) : (
-              <div style={{ width: 680, aspectRatio: '4/3', background: '#f5f5f5' }} />
-            )}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: `calc(100vh - ${headerBottom + 25}px - ${footerHeight + 25}px)`,
+            maxWidth: 'calc(100vw - 120px)',
+          }}>
+            <div style={{ position: 'relative' }}>
+              {imageUrl && current ? (
+                <img
+                  ref={imgRef}
+                  src={imageUrl}
+                  alt={current.title || 'Artwork'}
+                  style={{
+                    display: 'block',
+                    height: `calc(100vh - ${headerBottom + 25 + footerHeight + 25 + 80}px)`,
+                    width: 'auto',
+                    maxWidth: '100%',
+                    objectFit: 'contain',
+                  }}
+                  onLoad={() => {
+                    if (imgRef.current) setImageTop(imgRef.current.getBoundingClientRect().top)
+                  }}
+                />
+              ) : (
+                <div style={{ width: 680, aspectRatio: '4/3', background: '#f5f5f5' }} />
+              )}
 
-            {current && (
-              <p style={{ fontFamily: SERIF, fontSize: 13, color: '#6a6a6a', lineHeight: 1.6, margin: '15px 0 0 0', alignSelf: 'flex-start' }}>
-                {current.title && <span style={{ fontStyle: 'italic' }}>{current.title}<br /></span>}
-                {current.medium && <span>{current.medium}<br /></span>}
-                {current.dimensions && <span>{current.dimensions}</span>}
-              </p>
-            )}
+              {current && (
+                <p style={{ position: 'absolute', top: 'calc(100% + 12px)', right: 0, margin: 0, fontFamily: SERIF, fontSize: 13, color: '#6a6a6a', lineHeight: 1.3, whiteSpace: 'nowrap', textAlign: 'right' }}>
+                  {current.title && <span style={{ fontStyle: 'italic' }}>{current.title}<br /></span>}
+                  {current.medium && <span>{current.medium}<br /></span>}
+                  {current.dimensions && <span>{current.dimensions}</span>}
+                </p>
+              )}
+            </div>
           </div>
 
           {/* Next arrow */}
           <button
             onClick={next}
-            style={{ position: 'absolute', right: 24, top: '50%', transform: 'translateY(-50%)', color: '#c0c0c0', fontSize: 56, lineHeight: 1, background: 'none', border: 'none', cursor: 'pointer', zIndex: 10 }}
+            style={{ position: 'absolute', right: 24, top: '50%', transform: 'translateY(-50%)', color: '#c0c0c0', background: 'none', border: 'none', cursor: 'pointer', zIndex: 10, padding: 0, display: 'flex', alignItems: 'center' }}
             aria-label="Next"
           >
-            ›
+            <svg width="13" height="22" viewBox="0 0 13 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polyline points="1,1 11,11 1,21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
           </button>
         </div>
 
         {/* Fergus Binns + year — fixed top left */}
-        <div style={{ position: 'fixed', left: 40, top: 30, zIndex: 20, pointerEvents: 'none' }}>
-          <h1 style={{ fontFamily: SERIF, fontSize: 25, fontWeight: 400, color: '#7a7a7a', margin: 0 }}>
-            Fergus Binns
-          </h1>
+        <div ref={headerRef} style={{ position: 'fixed', left: 40, top: 30, zIndex: 20 }}>
+          <a href="/" style={{ textDecoration: 'none' }}>
+            <h1 style={{ fontFamily: SERIF, fontSize: 25, fontWeight: 400, color: '#7a7a7a', margin: 0 }}>
+              Fergus Binns
+            </h1>
+          </a>
           <p style={{ fontFamily: SERIF, fontSize: 13, color: '#b0b0b0', margin: '4px 0 0 0' }}>
             {activeYear}
           </p>
@@ -132,12 +169,12 @@ export default function Gallery({ works }: { works: Work[] }) {
       </div>
 
       {/* Desktop footer */}
-      <div className="hidden md:block" style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 20, background: '#fff' }}>
+      <div ref={footerRef} style={{ display: isDesktop ? 'block' : 'none', position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 20, background: '#fff' }}>
         <Footer />
       </div>
 
       {/* Mobile layout */}
-      <div className="md:hidden">
+      <div style={{ display: isDesktop ? 'none' : 'block' }}>
         <header className="px-5 pt-8 pb-4 flex items-center justify-between">
           <div>
             <h1 style={{ fontFamily: SERIF, fontSize: 20, fontWeight: 400, color: '#7a7a7a', margin: 0 }}>Fergus Binns</h1>
@@ -145,7 +182,7 @@ export default function Gallery({ works }: { works: Work[] }) {
           </div>
           <MobileMenu years={years} activeYear={activeYear} onYearChange={selectYear} />
         </header>
-        <div className="px-5 pb-16 flex flex-col gap-10">
+        <div className="px-5 pb-16 flex flex-col gap-10" style={{ paddingTop: 20 }}>
           {yearWorks.map((work) => {
             const url = work.image ? urlFor(work.image).width(800).fit('max').url() : null
             return (
