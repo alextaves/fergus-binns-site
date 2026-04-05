@@ -25,6 +25,14 @@ function Entry({ year, text }: { year?: string; text: string }) {
   )
 }
 
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Info',
+  description: 'Biography, exhibitions, and CV for painter Fergus Binns.',
+  alternates: { canonical: '/info' },
+}
+
 export const revalidate = 60
 
 export default async function InfoPage() {

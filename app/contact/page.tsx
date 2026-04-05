@@ -1,6 +1,13 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import ContactForm from './ContactForm'
 import Footer from '../components/Footer'
+
+export const metadata: Metadata = {
+  title: 'Contact',
+  description: 'Get in touch with painter Fergus Binns.',
+  alternates: { canonical: '/contact' },
+}
 
 const SERIF = 'var(--font-garamond), Georgia, serif'
 const SANS = 'Helvetica Neue, Helvetica, Arial, sans-serif'
