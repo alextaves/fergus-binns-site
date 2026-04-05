@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useRef, useEffect } from 'react'
+import { useState, useCallback, useRef, useEffect, useLayoutEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { urlFor } from '@/sanity/lib/image'
 import WorkDropdown from './WorkDropdown'
@@ -58,7 +58,7 @@ export default function Gallery({ works }: { works: Work[] }) {
 
 
   // Measure image top so we can position the header halfway between screen top and image top
-  useEffect(() => {
+  useLayoutEffect(() => {
     function measure() {
       if (imgRef.current) {
         const rect = imgRef.current.getBoundingClientRect()
@@ -120,6 +120,8 @@ export default function Gallery({ works }: { works: Work[] }) {
                   }}
                   onLoad={() => {
                     if (imgRef.current) setImageTop(imgRef.current.getBoundingClientRect().top)
+                    if (headerRef.current) setHeaderBottom(headerRef.current.getBoundingClientRect().bottom)
+                    if (footerRef.current) setFooterHeight(footerRef.current.offsetHeight)
                   }}
                 />
               ) : (
