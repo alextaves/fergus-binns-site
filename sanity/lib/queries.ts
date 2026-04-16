@@ -27,6 +27,15 @@ export async function getMobileHomepageWork() {
   )
 }
 
+export async function getHomepageSettings() {
+  return client.fetch(
+    `*[_type == "homepage" && _id == "homepage-singleton"][0] {
+      landscapeWork->{ _id, title, year, medium, dimensions, image },
+      portraitWork->{ _id, title, year, medium, dimensions, image }
+    }`
+  )
+}
+
 export async function getCV() {
   return client.fetch(
     `*[_type == "cv" && _id == "cv-singleton"][0] {

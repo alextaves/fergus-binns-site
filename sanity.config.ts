@@ -17,6 +17,13 @@ export default defineConfig({
         S.list()
           .title('Fergus Binns')
           .items([
+            // Homepage
+            S.listItem()
+              .title('Homepage')
+              .child(S.document().schemaType('homepage').documentId('homepage-singleton')),
+
+            S.divider(),
+
             // All works flat list
             S.listItem()
               .title('All Works')
