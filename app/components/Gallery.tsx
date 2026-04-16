@@ -170,7 +170,7 @@ export default function Gallery({ works }: { works: Work[] }) {
 
         {/* Nav — fixed 80px from top, right aligned */}
         <nav style={{ position: 'fixed', top: 25, right: 40, zIndex: 20, display: 'flex', alignItems: 'center', gap: 32 }}>
-          <WorkDropdown years={years} activeYear={activeYear} onChange={selectYear} />
+          <WorkDropdown years={years} activeYear={activeYear} onChange={selectYear} footerHeight={footerHeight} />
           <a href="/info" style={{ fontFamily: SANS, fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9a9a9a', textDecoration: 'none' }}>Info</a>
           <a href="/contact" style={{ fontFamily: SANS, fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9a9a9a', textDecoration: 'none' }}>Contact</a>
         </nav>

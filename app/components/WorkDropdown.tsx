@@ -5,7 +5,7 @@ import { useState, useRef, useEffect } from 'react'
 const SANS = 'Helvetica Neue, Helvetica, Arial, sans-serif'
 const SERIF = 'var(--font-garamond), Georgia, serif'
 
-export default function WorkDropdown({ years, activeYear, onChange }: { years: string[], activeYear: string, onChange: (y: string) => void }) {
+export default function WorkDropdown({ years, activeYear, onChange, footerHeight = 65 }: { years: string[], activeYear: string, onChange: (y: string) => void, footerHeight?: number }) {
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
@@ -28,7 +28,7 @@ export default function WorkDropdown({ years, activeYear, onChange }: { years: s
       </button>
 
       {open && (
-        <div style={{ position: 'absolute', right: 0, top: 'calc(100% + 12px)', background: 'white', zIndex: 50, paddingLeft: 15, paddingRight: 15, maxHeight: 'calc(100vh - 80px)', overflowY: 'auto' }}>
+        <div style={{ position: 'absolute', right: 0, top: 'calc(100% + 12px)', background: 'white', zIndex: 50, paddingLeft: 15, paddingRight: 15, maxHeight: `calc(100vh - 80px - ${footerHeight}px)`, overflowY: 'auto' }}>
           {years.map(year => (
             <button
               key={year}
