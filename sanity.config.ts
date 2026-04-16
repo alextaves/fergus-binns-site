@@ -6,6 +6,7 @@ import { schemaTypes } from './sanity/schemas'
 export default defineConfig({
   name: 'fergus-binns',
   title: 'Fergus Binns',
+  basePath: '/studio',
 
   projectId: 'ijppbmn9',
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET ?? 'production',
