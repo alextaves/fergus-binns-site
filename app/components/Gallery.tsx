@@ -135,6 +135,12 @@ export default function Gallery({ works }: { works: Work[] }) {
                   {current.dimensions && <span>{current.dimensions}</span>}
                 </p>
               )}
+
+              {current && (
+                <p style={{ position: 'absolute', top: 'calc(100% + 12px)', left: 0, margin: 0, fontFamily: SERIF, fontSize: 13, color: '#6a6a6a', lineHeight: 1.3, whiteSpace: 'nowrap' }}>
+                  {index + 1}/{yearWorks.length}
+                </p>
+              )}
             </div>
           </div>
 
