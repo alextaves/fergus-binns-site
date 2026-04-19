@@ -4,6 +4,11 @@ export const homepage = defineType({
   name: 'homepage',
   title: 'Homepage',
   type: 'document',
+  preview: {
+    prepare() {
+      return { title: 'Homepage' }
+    },
+  },
   fields: [
     defineField({
       name: 'landscapeWork',
