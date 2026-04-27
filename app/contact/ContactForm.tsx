@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 const SERIF = 'var(--font-garamond), Georgia, serif'
 const SANS = 'Helvetica Neue, Helvetica, Arial, sans-serif'
@@ -30,6 +30,16 @@ const inputStyle = {
 
 export default function ContactForm() {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
+  const widgetRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const script = document.createElement('script')
+    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js'
+    script.async = true
+    script.defer = true
+    document.head.appendChild(script)
+    return () => { document.head.removeChild(script) }
+  }, [])
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -38,14 +48,17 @@ export default function ContactForm() {
     const data = new FormData(form)
 
     try {
-      const res = await fetch('https://formspree.io/f/xzdyvanz', {
+      const res = await fetch('/api/contact', {
         method: 'POST',
         body: data,
-        headers: { Accept: 'application/json' },
       })
       if (res.ok) {
         setStatus('sent')
         form.reset()
+        // Reset Turnstile widget
+        if (window.turnstile && widgetRef.current) {
+          window.turnstile.reset(widgetRef.current)
+        }
       } else {
         setStatus('error')
       }
@@ -84,6 +97,12 @@ export default function ContactForm() {
           style={{ ...inputStyle, resize: 'none', borderBottom: '1px solid #e0e0e0' }}
         />
       </div>
+
+      <div
+        ref={widgetRef}
+        className="cf-turnstile"
+        data-sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
+      />
 
       {status === 'error' && (
         <p style={{ fontFamily: SERIF, fontSize: 13, color: '#c0a0a0', margin: 0 }}>
