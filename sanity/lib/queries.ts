@@ -2,7 +2,7 @@ import { client } from './client'
 
 export async function getAllWorks() {
   return client.fetch(
-    `*[_type == "work"] | order(year desc, _createdAt asc) {
+    `*[_type == "work"] | order(year desc, displayOrder asc, _createdAt asc) {
       _id, title, year, medium, dimensions, image, pageUrl
     }`
   )

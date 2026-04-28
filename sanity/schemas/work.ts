@@ -37,6 +37,12 @@ export const work = defineType({
       type: 'url',
     }),
     defineField({
+      name: 'displayOrder',
+      title: 'Display Order',
+      type: 'number',
+      description: 'Controls the order within the same year. Lower numbers appear first.',
+    }),
+    defineField({
       name: 'isHomepage',
       title: 'Homepage Hero',
       type: 'boolean',
