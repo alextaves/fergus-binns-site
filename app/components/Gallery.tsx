@@ -196,12 +196,16 @@ export default function Gallery({ works }: { works: Work[] }) {
             return (
               <div key={work._id}>
                 {url && <img src={url} alt={work.title || 'Artwork'} style={{ width: '100%', height: 'auto' }} />}
-                <div className="mt-3">
-                  <p className="text-sm text-[#6a6a6a] leading-relaxed" style={{ fontFamily: SERIF }}>
-                    {work.title && <span>{work.title}<br /></span>}
-                    {work.medium && <span>{work.medium}<br /></span>}
-                    {work.dimensions && <span>{work.dimensions}</span>}
-                  </p>
+                <div className="mt-3" style={{ fontFamily: SERIF }}>
+                  {work.title && (
+                    <p className="text-sm text-[#6a6a6a] leading-tight italic">{work.title}</p>
+                  )}
+                  {(work.medium || work.dimensions) && (
+                    <p className="text-sm text-[#6a6a6a] leading-snug mt-1">
+                      {work.medium && <span>{work.medium}<br /></span>}
+                      {work.dimensions && <span>{work.dimensions}</span>}
+                    </p>
+                  )}
                 </div>
               </div>
             )
