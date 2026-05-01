@@ -78,8 +78,6 @@ export default function HomepageClient({ imageUrl, mobileImageUrl, year, years, 
             )}
             <p style={{ position: 'absolute', top: 'calc(100% + 12px)', right: 0, margin: 0, fontFamily: SERIF, fontSize: 13, color: '#6a6a6a', lineHeight: 1.3, whiteSpace: 'nowrap', textAlign: 'right' }}>
               {title && <span style={{ fontStyle: 'italic' }}>{title}<br /></span>}
-              {medium && <span>{medium}<br /></span>}
-              {dimensions && <span>{dimensions}<br /></span>}
               {year && <span>{year}</span>}
             </p>
           </div>
@@ -133,12 +131,8 @@ export default function HomepageClient({ imageUrl, mobileImageUrl, year, years, 
           {mobileTitle && (
             <p style={{ margin: 0, fontSize: 12, color: '#6a6a6a', lineHeight: 1.25, fontStyle: 'italic' }}>{mobileTitle}</p>
           )}
-          {(mobileMedium || mobileDimensions || year) && (
-            <p style={{ margin: '4px 0 0', fontSize: 12, color: '#6a6a6a', lineHeight: 1.375 }}>
-              {mobileMedium && <span>{mobileMedium}<br /></span>}
-              {mobileDimensions && <span>{mobileDimensions}<br /></span>}
-              {year && <span>{year}</span>}
-            </p>
+          {year && (
+            <p style={{ margin: '4px 0 0', fontSize: 12, color: '#6a6a6a', lineHeight: 1.375 }}>{year}</p>
           )}
         </div>
 
