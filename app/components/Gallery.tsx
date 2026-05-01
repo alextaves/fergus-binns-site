@@ -105,7 +105,7 @@ export default function Gallery({ works }: { works: Work[] }) {
             height: `calc(100vh - ${headerBottom + 25}px - ${footerHeight + 25}px)`,
             maxWidth: 'calc(100vw - 120px)',
           }}>
-            <div style={{ position: 'relative' }}>
+            <div style={{ position: 'relative', width: 'fit-content' }}>
               {imageUrl && current ? (
                 <img
                   ref={imgRef}
