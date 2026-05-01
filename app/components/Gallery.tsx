@@ -129,7 +129,7 @@ export default function Gallery({ works }: { works: Work[] }) {
               )}
 
               {current && (
-                <p style={{ position: 'absolute', top: 'calc(100% + 12px)', right: 0, margin: 0, fontFamily: SERIF, fontSize: 13, color: '#6a6a6a', lineHeight: 1.3, whiteSpace: 'nowrap', textAlign: 'right' }}>
+                <p style={{ position: 'absolute', top: 'calc(100% + 12px)', right: 0, margin: 0, fontFamily: SERIF, fontSize: 13, color: '#6a6a6a', lineHeight: 1.25, textAlign: 'right', maxWidth: '50%' }}>
                   {current.title && <span style={{ fontStyle: 'italic' }}>{current.title}<br /></span>}
                   {current.medium && <span>{current.medium}<br /></span>}
                   {current.dimensions && <span>{current.dimensions}</span>}
