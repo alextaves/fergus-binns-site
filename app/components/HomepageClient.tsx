@@ -13,9 +13,15 @@ type Props = {
   mobileImageUrl: string
   year: string
   years: string[]
+  title: string
+  medium: string
+  dimensions: string
+  mobileTitle: string
+  mobileMedium: string
+  mobileDimensions: string
 }
 
-export default function HomepageClient({ imageUrl, mobileImageUrl, year, years }: Props) {
+export default function HomepageClient({ imageUrl, mobileImageUrl, year, years, title, medium, dimensions, mobileTitle, mobileMedium, mobileDimensions }: Props) {
   const router = useRouter()
   const headerRef = useRef<HTMLDivElement>(null)
   const footerRef = useRef<HTMLDivElement>(null)
@@ -70,8 +76,11 @@ export default function HomepageClient({ imageUrl, mobileImageUrl, year, years }
                 style={{ display: 'block', height: imgH, width: 'auto', maxWidth: 'calc(100vw - 120px)', objectFit: 'contain' }}
               />
             )}
-            <p style={{ position: 'absolute', top: 'calc(100% + 12px)', right: 0, margin: 0, fontFamily: SERIF, fontSize: 13, color: '#6a6a6a', lineHeight: 1.3, whiteSpace: 'nowrap' }}>
-              {year}
+            <p style={{ position: 'absolute', top: 'calc(100% + 12px)', right: 0, margin: 0, fontFamily: SERIF, fontSize: 13, color: '#6a6a6a', lineHeight: 1.3, whiteSpace: 'nowrap', textAlign: 'right' }}>
+              {title && <span style={{ fontStyle: 'italic' }}>{title}<br /></span>}
+              {medium && <span>{medium}<br /></span>}
+              {dimensions && <span>{dimensions}<br /></span>}
+              {year && <span>{year}</span>}
             </p>
           </div>
         </div>
@@ -107,26 +116,33 @@ export default function HomepageClient({ imageUrl, mobileImageUrl, year, years }
           <MobileMenu years={years} onNavigate={(year) => router.push(`/work?year=${year}`)} />
         </header>
 
-        {/* Image + caption — fills remaining space */}
+        {/* Image — fills remaining space */}
         <div style={{ flex: 1, minHeight: 0, padding: '20px 40px 0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ position: 'relative', maxHeight: '100%', display: 'flex' }}>
-            {mobileImageUrl && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={mobileImageUrl}
-                alt="Fergus Binns"
-                style={{ display: 'block', maxHeight: '100%', maxWidth: 'calc(100vw - 80px)', width: 'auto', height: 'auto' }}
-              />
-            )}
-            {year && (
-              <p style={{ position: 'absolute', top: 'calc(100% + 12px)', right: 0, margin: 0, fontFamily: SERIF, fontSize: 12, color: '#6a6a6a', lineHeight: 1.3, whiteSpace: 'nowrap' }}>
-                {year}
-              </p>
-            )}
-          </div>
+          {mobileImageUrl && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={mobileImageUrl}
+              alt="Fergus Binns"
+              style={{ display: 'block', maxHeight: '100%', maxWidth: 'calc(100vw - 80px)', width: 'auto', height: 'auto' }}
+            />
+          )}
         </div>
 
-        <div style={{ flexShrink: 0, paddingTop: 40 }}>
+        {/* Caption */}
+        <div style={{ flexShrink: 0, padding: '12px 40px 0', fontFamily: SERIF }}>
+          {mobileTitle && (
+            <p style={{ margin: 0, fontSize: 12, color: '#6a6a6a', lineHeight: 1.25, fontStyle: 'italic' }}>{mobileTitle}</p>
+          )}
+          {(mobileMedium || mobileDimensions || year) && (
+            <p style={{ margin: '4px 0 0', fontSize: 12, color: '#6a6a6a', lineHeight: 1.375 }}>
+              {mobileMedium && <span>{mobileMedium}<br /></span>}
+              {mobileDimensions && <span>{mobileDimensions}<br /></span>}
+              {year && <span>{year}</span>}
+            </p>
+          )}
+        </div>
+
+        <div style={{ flexShrink: 0, paddingTop: 16 }}>
           <Footer />
         </div>
       </div>

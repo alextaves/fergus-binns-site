@@ -24,6 +24,12 @@ export default async function Home() {
       mobileImageUrl={mobileImageUrl ?? imageUrl ?? ''}
       year={desktopWork?.year ?? ''}
       years={years}
+      title={desktopWork?.title ?? ''}
+      medium={desktopWork?.medium ?? ''}
+      dimensions={desktopWork?.dimensions ?? ''}
+      mobileTitle={mobileWork?.title ?? desktopWork?.title ?? ''}
+      mobileMedium={mobileWork?.medium ?? desktopWork?.medium ?? ''}
+      mobileDimensions={mobileWork?.dimensions ?? desktopWork?.dimensions ?? ''}
     />
   )
 }
