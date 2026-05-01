@@ -76,10 +76,11 @@ export default function HomepageClient({ imageUrl, mobileImageUrl, year, years, 
                 style={{ display: 'block', height: imgH, width: 'auto', maxWidth: 'calc(100vw - 120px)', objectFit: 'contain' }}
               />
             )}
-            <p style={{ position: 'absolute', top: 'calc(100% + 12px)', right: 0, margin: 0, fontFamily: SERIF, fontSize: 13, color: '#6a6a6a', lineHeight: 1.3, whiteSpace: 'nowrap', textAlign: 'right' }}>
-              {title && <span style={{ fontStyle: 'italic' }}>{title}<br /></span>}
-              {year && <span>{year}</span>}
-            </p>
+            {title && (
+              <p style={{ position: 'absolute', top: 'calc(100% + 12px)', right: 0, margin: 0, fontFamily: SERIF, fontSize: 13, color: '#6a6a6a', lineHeight: 1.3, whiteSpace: 'nowrap', textAlign: 'right', fontStyle: 'italic' }}>
+                {title}
+              </p>
+            )}
           </div>
         </div>
 
@@ -127,14 +128,11 @@ export default function HomepageClient({ imageUrl, mobileImageUrl, year, years, 
         </div>
 
         {/* Caption */}
-        <div style={{ flexShrink: 0, padding: '12px 40px 0', fontFamily: SERIF }}>
-          {mobileTitle && (
+        {mobileTitle && (
+          <div style={{ flexShrink: 0, padding: '12px 40px 0', fontFamily: SERIF }}>
             <p style={{ margin: 0, fontSize: 12, color: '#6a6a6a', lineHeight: 1.25, fontStyle: 'italic' }}>{mobileTitle}</p>
-          )}
-          {year && (
-            <p style={{ margin: '4px 0 0', fontSize: 12, color: '#6a6a6a', lineHeight: 1.375 }}>{year}</p>
-          )}
-        </div>
+          </div>
+        )}
 
         <div style={{ flexShrink: 0, paddingTop: 16 }}>
           <Footer />
