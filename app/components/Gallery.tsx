@@ -104,8 +104,9 @@ export default function Gallery({ works }: { works: Work[] }) {
             justifyContent: 'center',
             height: `calc(100vh - ${headerBottom + 25}px - ${footerHeight + 25}px)`,
             maxWidth: 'calc(100vw - 120px)',
+            overflow: 'hidden',
           }}>
-            <div style={{ position: 'relative', width: 'fit-content' }}>
+            <div style={{ position: 'relative', width: 'fit-content', marginBottom: '50px' }}>
               {imageUrl && current ? (
                 <img
                   ref={imgRef}
@@ -113,7 +114,7 @@ export default function Gallery({ works }: { works: Work[] }) {
                   alt={current.title || 'Artwork'}
                   style={{
                     display: 'block',
-                    height: `calc(100vh - ${headerBottom + 25 + footerHeight + 25 + 80}px)`,
+                    height: `calc((100vh - ${headerBottom + 25 + footerHeight + 25 + 80}px) * 0.95)`,
                     width: 'auto',
                     maxWidth: '100%',
                     objectFit: 'contain',

@@ -65,7 +65,7 @@ export default function HomepageClient({ imageUrl, mobileImageUrl, year, years, 
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          overflow: 'visible',
+          overflow: 'hidden',
         }}>
           <div style={{ position: 'relative' }}>
             {imageUrl && (
