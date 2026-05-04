@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { EB_Garamond } from 'next/font/google'
+import Script from 'next/script'
 import './globals.css'
 
 const garamond = EB_Garamond({
@@ -73,6 +74,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="min-h-full">{children}</body>
+      <Script src="https://www.googletagmanager.com/gtag/js?id=G-GZFRGJERBQ" strategy="afterInteractive" />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-GZFRGJERBQ');
+        `}
+      </Script>
     </html>
   )
 }
