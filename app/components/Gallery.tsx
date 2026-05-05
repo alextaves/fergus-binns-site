@@ -12,11 +12,18 @@ type Work = {
   year: string
   medium: string
   dimensions: string
+  photoCredit: string
   image: any
 }
 
 const SERIF = 'var(--font-garamond), Georgia, serif'
 const SANS = 'Helvetica Neue, Helvetica, Arial, sans-serif'
+
+function formatTitle(title: string) {
+  const match = title.match(/^(.*?)(\s*[\(\[].*)$/)
+  if (!match) return title
+  return <>{match[1]}<br />{match[2].trim()}</>
+}
 
 export default function Gallery({ works }: { works: Work[] }) {
   const years = Array.from(new Set(works.map((w) => w.year))).sort((a, b) => Number(b) - Number(a))
@@ -31,13 +38,23 @@ export default function Gallery({ works }: { works: Work[] }) {
   const [headerBottom, setHeaderBottom] = useState(80)
   const [footerHeight, setFooterHeight] = useState(65)
   const [isDesktop, setIsDesktop] = useState(false)
+  const [isWide, setIsWide] = useState(false)
 
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 1025px)')
     setIsDesktop(mq.matches)
     const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches)
     mq.addEventListener('change', handler)
-    return () => mq.removeEventListener('change', handler)
+
+    const mqWide = window.matchMedia('(min-width: 1800px)')
+    setIsWide(mqWide.matches)
+    const handlerWide = (e: MediaQueryListEvent) => setIsWide(e.matches)
+    mqWide.addEventListener('change', handlerWide)
+
+    return () => {
+      mq.removeEventListener('change', handler)
+      mqWide.removeEventListener('change', handlerWide)
+    }
   }, [])
 
   const yearWorks = works.filter((w) => w.year === activeYear)
@@ -103,7 +120,7 @@ export default function Gallery({ works }: { works: Work[] }) {
             alignItems: 'center',
             justifyContent: 'center',
             height: `calc(100vh - ${headerBottom + 25}px - ${footerHeight + 25}px)`,
-            maxWidth: 'calc(100vw - 120px)',
+            maxWidth: 'calc(100vw - 520px)',
             overflow: 'hidden',
           }}>
             <div style={{ position: 'relative', width: 'fit-content', marginBottom: '50px' }}>
@@ -114,10 +131,10 @@ export default function Gallery({ works }: { works: Work[] }) {
                   alt={current.title || 'Artwork'}
                   style={{
                     display: 'block',
-                    height: `calc((100vh - ${headerBottom + 25 + footerHeight + 25 + 80}px) * 0.95)`,
+                    maxHeight: `calc((100vh - ${headerBottom + 25 + footerHeight + 25 + 80}px) * 0.95)`,
+                    maxWidth: 'calc(100vw - 520px)',
                     width: 'auto',
-                    maxWidth: '100%',
-                    objectFit: 'contain',
+                    height: 'auto',
                   }}
                   onLoad={() => {
                     if (imgRef.current) setImageTop(imgRef.current.getBoundingClientRect().top)
@@ -129,13 +146,6 @@ export default function Gallery({ works }: { works: Work[] }) {
                 <div style={{ width: 680, aspectRatio: '4/3', background: '#f5f5f5' }} />
               )}
 
-              {current && (
-                <p style={{ position: 'absolute', top: 'calc(100% + 12px)', right: 0, margin: 0, fontFamily: SERIF, fontSize: 13, color: '#6a6a6a', lineHeight: 1.25, textAlign: 'right', maxWidth: '50%' }}>
-                  {current.title && <span style={{ fontStyle: 'italic' }}>{current.title}<br /></span>}
-                  {current.medium && <span>{current.medium}<br /></span>}
-                  {current.dimensions && <span>{current.dimensions}</span>}
-                </p>
-              )}
 
               {current && (
                 <p style={{ position: 'absolute', top: 'calc(100% + 12px)', left: 0, margin: 0, fontFamily: SERIF, fontSize: 13, color: '#6a6a6a', lineHeight: 1.3, whiteSpace: 'nowrap' }}>
@@ -144,6 +154,18 @@ export default function Gallery({ works }: { works: Work[] }) {
               )}
             </div>
           </div>
+
+          {/* Description — right side, vertically centered with arrow */}
+          {current && (
+            <div style={{ position: 'absolute', right: 80, top: '50%', transform: 'translateY(-50%)', textAlign: 'right', maxWidth: 160, zIndex: 10 }}>
+              <p style={{ margin: 0, fontFamily: SERIF, fontSize: isWide ? 14 : 13, color: '#6a6a6a', lineHeight: 1.25, textWrap: 'pretty' }}>
+                {current.title && <span style={{ fontStyle: 'italic' }}>{formatTitle(current.title)}<br /></span>}
+                {current.medium && <span>{current.medium}<br /></span>}
+                {current.dimensions && <span>{current.dimensions}</span>}
+                {current.photoCredit && <><br /><span style={{ color: '#b0b0b0' }}>{current.photoCredit}</span></>}
+              </p>
+            </div>
+          )}
 
           {/* Next arrow */}
           <button

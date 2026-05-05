@@ -26,6 +26,11 @@ export const work = defineType({
       type: 'string',
     }),
     defineField({
+      name: 'photoCredit',
+      title: 'Photo Credit',
+      type: 'string',
+    }),
+    defineField({
       name: 'image',
       title: 'Image',
       type: 'image',
