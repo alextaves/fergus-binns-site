@@ -129,8 +129,11 @@ export default function HomepageClient({ imageUrl, mobileImageUrl, year, years, 
 
         {/* Caption */}
         {mobileTitle && (
-          <div style={{ flexShrink: 0, padding: '12px 40px 0', fontFamily: SERIF }}>
-            <p style={{ margin: 0, fontSize: 12, color: '#6a6a6a', lineHeight: 1.25, fontStyle: 'italic' }}>{mobileTitle}</p>
+          <div style={{ flexShrink: 0, padding: '12px 40px 0' }}>
+            <p style={{ fontFamily: SANS, fontSize: 12, color: '#6a6a6a', lineHeight: 1.15, fontStyle: 'italic', letterSpacing: '0.04em', margin: 0 }}>
+              {mobileTitle}<br />
+              <span style={{ fontStyle: 'normal' }}>{year}</span>
+            </p>
           </div>
         )}
 

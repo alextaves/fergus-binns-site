@@ -204,8 +204,8 @@ export default function Gallery({ works }: { works: Work[] }) {
       <div style={{ display: isDesktop ? 'none' : 'block' }}>
         <header className="px-5 pt-8 pb-4 flex items-center justify-between">
           <div>
-            <h1 style={{ fontFamily: SERIF, fontSize: 20, fontWeight: 400, color: '#7a7a7a', margin: 0 }}>Fergus Binns</h1>
-            <p style={{ fontFamily: SERIF, fontSize: 12, color: '#b0b0b0', margin: '3px 0 0 0' }}>{activeYear}</p>
+            <h1 style={{ fontFamily: SANS, fontSize: 20, fontWeight: 400, color: '#1c1917', margin: 0, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Fergus Binns</h1>
+            <p style={{ fontFamily: SANS, fontSize: 12, color: '#b0b0b0', margin: '3px 0 0 0' }}>{activeYear}</p>
           </div>
           <MobileMenu years={years} activeYear={activeYear} onYearChange={selectYear} />
         </header>
@@ -215,12 +215,15 @@ export default function Gallery({ works }: { works: Work[] }) {
             return (
               <div key={work._id}>
                 {url && <img src={url} alt={work.title || 'Artwork'} style={{ width: '100%', height: 'auto' }} />}
-                <div className="mt-3" style={{ fontFamily: SERIF }}>
+                <div className="mt-3">
                   {work.title && (
-                    <p className="text-sm text-[#6a6a6a] leading-tight italic">{work.title}</p>
+                    <p style={{ fontFamily: SANS, fontSize: 12, color: '#6a6a6a', lineHeight: 1.15, fontStyle: 'italic', letterSpacing: '0.04em', margin: '0 0 4px 0' }}>
+                      {work.title}<br />
+                      <span style={{ fontStyle: 'normal' }}>{work.year}</span>
+                    </p>
                   )}
                   {(work.medium || work.dimensions) && (
-                    <p className="text-sm text-[#6a6a6a] leading-snug mt-1">
+                    <p style={{ fontFamily: SANS, fontSize: 12, color: '#6a6a6a', lineHeight: 1.3, letterSpacing: '0.04em', margin: 0 }}>
                       {work.medium && <span>{work.medium}<br /></span>}
                       {work.dimensions && <span>{work.dimensions}</span>}
                     </p>
