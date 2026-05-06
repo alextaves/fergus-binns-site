@@ -35,8 +35,10 @@ export default function Gallery({ works }: { works: Work[] }) {
   const imgRef = useRef<HTMLImageElement>(null)
   const headerRef = useRef<HTMLDivElement>(null)
   const footerRef = useRef<HTMLDivElement>(null)
+  const descRef = useRef<HTMLDivElement>(null)
   const [headerBottom, setHeaderBottom] = useState(80)
   const [footerHeight, setFooterHeight] = useState(65)
+  const [descHeight, setDescHeight] = useState(140)
   const [isDesktop, setIsDesktop] = useState(false)
   const [isWide, setIsWide] = useState(false)
 
@@ -83,6 +85,7 @@ export default function Gallery({ works }: { works: Work[] }) {
       }
       if (headerRef.current) setHeaderBottom(headerRef.current.getBoundingClientRect().bottom)
       if (footerRef.current) setFooterHeight(footerRef.current.offsetHeight)
+      if (descRef.current) setDescHeight(descRef.current.offsetHeight)
     }
     measure()
     window.addEventListener('resize', measure)
@@ -100,50 +103,49 @@ export default function Gallery({ works }: { works: Work[] }) {
 
       {/* Desktop layout */}
       <div style={{ display: isDesktop ? 'block' : 'none' }}>
-        {/* Full viewport centered container */}
-        <div style={{ position: 'fixed', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
 
+        {/* Image zone — edges pinned so image can never overlap description or chrome */}
+        <div style={{
+          position: 'fixed',
+          top: headerBottom + 25,
+          left: 40,
+          right: 40,
+          bottom: footerHeight + descHeight + 40,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 5,
+        }}>
+          <div style={{ position: 'relative', width: 'fit-content' }}>
+            {imageUrl && current ? (
+              <img
+                ref={imgRef}
+                src={imageUrl}
+                alt={current.title || 'Artwork'}
+                style={{
+                  display: 'block',
+                  maxWidth: 'calc(100vw - 80px)',
+                  maxHeight: `calc(100vh - ${headerBottom + 25 + footerHeight + descHeight + 70}px)`,
+                  width: 'auto',
+                  height: 'auto',
+                }}
+                onLoad={() => {
+                  if (imgRef.current) setImageTop(imgRef.current.getBoundingClientRect().top)
+                  if (headerRef.current) setHeaderBottom(headerRef.current.getBoundingClientRect().bottom)
+                  if (footerRef.current) setFooterHeight(footerRef.current.offsetHeight)
+                  if (descRef.current) setDescHeight(descRef.current.offsetHeight)
+                }}
+              />
+            ) : (
+              <div style={{ width: 680, aspectRatio: '4/3', background: '#f5f5f5' }} />
+            )}
 
-          {/* Image + caption */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: 'calc(100vw - 80px)',
-            height: `calc(100vh - ${headerBottom + footerHeight + 50}px)`,
-          }}>
-            <div style={{ position: 'relative', width: 'fit-content' }}>
-              {imageUrl && current ? (
-                <img
-                  ref={imgRef}
-                  src={imageUrl}
-                  alt={current.title || 'Artwork'}
-                  style={{
-                    display: 'block',
-                    maxWidth: 'calc(100vw - 80px)',
-                    maxHeight: `calc(100vh - ${headerBottom + footerHeight + 80}px)`,
-                    width: 'auto',
-                    height: 'auto',
-                  }}
-                  onLoad={() => {
-                    if (imgRef.current) setImageTop(imgRef.current.getBoundingClientRect().top)
-                    if (headerRef.current) setHeaderBottom(headerRef.current.getBoundingClientRect().bottom)
-                    if (footerRef.current) setFooterHeight(footerRef.current.offsetHeight)
-                  }}
-                />
-              ) : (
-                <div style={{ width: 680, aspectRatio: '4/3', background: '#f5f5f5' }} />
-              )}
-
-
-              {current && (
-                <p style={{ position: 'absolute', top: 'calc(100% + 12px)', right: 0, margin: 0, fontFamily: SANS, fontSize: 12, letterSpacing: '0.04em', color: '#6a6a6a', lineHeight: 1.15, whiteSpace: 'nowrap' }}>
-                  {index + 1}/{yearWorks.length}
-                </p>
-              )}
-            </div>
+            {current && (
+              <p style={{ position: 'absolute', top: 'calc(100% + 12px)', right: 0, margin: 0, fontFamily: SANS, fontSize: 12, letterSpacing: '0.04em', color: '#6a6a6a', lineHeight: 1.15, whiteSpace: 'nowrap' }}>
+                {index + 1}/{yearWorks.length}
+              </p>
+            )}
           </div>
-
         </div>
 
         {/* Fergus Binns + year — fixed top left */}
@@ -165,7 +167,7 @@ export default function Gallery({ works }: { works: Work[] }) {
 
       {/* Description + nav — fixed bottom left, desktop only */}
       {isDesktop && current && (
-        <div style={{ position: 'fixed', left: 40, bottom: footerHeight + 24, zIndex: 20, maxWidth: 220 }}>
+        <div ref={descRef} style={{ position: 'fixed', left: 40, bottom: footerHeight + 24, zIndex: 20, maxWidth: 220 }}>
 
           {/* Title + year — tight line spacing */}
           {current.title && (
