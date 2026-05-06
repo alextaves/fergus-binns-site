@@ -103,27 +103,16 @@ export default function Gallery({ works }: { works: Work[] }) {
         {/* Full viewport centered container */}
         <div style={{ position: 'fixed', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
 
-          {/* Prev arrow */}
-          <button
-            onClick={prev}
-            style={{ position: 'absolute', left: 24, top: '50%', transform: 'translateY(-50%)', color: '#c0c0c0', background: 'none', border: 'none', cursor: 'pointer', zIndex: 10, padding: 0, display: 'flex', alignItems: 'center' }}
-            aria-label="Previous"
-          >
-            <svg width="13" height="22" viewBox="0 0 13 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <polyline points="11,1 1,11 11,21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </button>
 
           {/* Image + caption */}
           <div style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            height: `calc(100vh - ${headerBottom + 25}px - ${footerHeight + 25}px)`,
-            maxWidth: 'calc(100vw - 520px)',
-            overflow: 'hidden',
+            width: 'calc(100vw - 80px)',
+            height: `calc(100vh - ${headerBottom + footerHeight + 50}px)`,
           }}>
-            <div style={{ position: 'relative', width: 'fit-content', marginBottom: '50px' }}>
+            <div style={{ position: 'relative', width: 'fit-content' }}>
               {imageUrl && current ? (
                 <img
                   ref={imgRef}
@@ -131,8 +120,8 @@ export default function Gallery({ works }: { works: Work[] }) {
                   alt={current.title || 'Artwork'}
                   style={{
                     display: 'block',
-                    maxHeight: `calc((100vh - ${headerBottom + 25 + footerHeight + 25 + 80}px) * 0.95)`,
-                    maxWidth: 'calc(100vw - 520px)',
+                    maxWidth: 'calc(100vw - 80px)',
+                    maxHeight: `calc(100vh - ${headerBottom + footerHeight + 80}px)`,
                     width: 'auto',
                     height: 'auto',
                   }}
@@ -148,47 +137,22 @@ export default function Gallery({ works }: { works: Work[] }) {
 
 
               {current && (
-                <p style={{ position: 'absolute', top: 'calc(100% + 12px)', left: 0, margin: 0, fontFamily: SERIF, fontSize: 13, color: '#6a6a6a', lineHeight: 1.3, whiteSpace: 'nowrap' }}>
+                <p style={{ position: 'absolute', top: 'calc(100% + 12px)', right: 0, margin: 0, fontFamily: SANS, fontSize: 12, letterSpacing: '0.04em', color: '#6a6a6a', lineHeight: 1.15, whiteSpace: 'nowrap' }}>
                   {index + 1}/{yearWorks.length}
                 </p>
               )}
             </div>
           </div>
 
-          {/* Description — right side, vertically centered with arrow */}
-          {current && (
-            <div style={{ position: 'absolute', right: 80, top: '50%', transform: 'translateY(-50%)', textAlign: 'right', maxWidth: 160, zIndex: 10 }}>
-              <p style={{ margin: 0, fontFamily: SERIF, fontSize: isWide ? 14 : 13, color: '#6a6a6a', lineHeight: 1.25, textWrap: 'pretty' }}>
-                {current.title && <span style={{ fontStyle: 'italic' }}>{formatTitle(current.title)}<br /></span>}
-                {current.medium && <span>{current.medium}<br /></span>}
-                {current.dimensions && <span>{current.dimensions}</span>}
-                {current.photoCredit && <><br /><span style={{ color: '#b0b0b0' }}>{current.photoCredit}</span></>}
-              </p>
-            </div>
-          )}
-
-          {/* Next arrow */}
-          <button
-            onClick={next}
-            style={{ position: 'absolute', right: 24, top: '50%', transform: 'translateY(-50%)', color: '#c0c0c0', background: 'none', border: 'none', cursor: 'pointer', zIndex: 10, padding: 0, display: 'flex', alignItems: 'center' }}
-            aria-label="Next"
-          >
-            <svg width="13" height="22" viewBox="0 0 13 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <polyline points="1,1 11,11 1,21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </button>
         </div>
 
         {/* Fergus Binns + year — fixed top left */}
         <div ref={headerRef} style={{ position: 'fixed', left: 40, top: 30, zIndex: 20 }}>
           <a href="/" style={{ textDecoration: 'none' }}>
-            <h1 style={{ fontFamily: SERIF, fontSize: 25, fontWeight: 400, color: '#7a7a7a', margin: 0 }}>
+            <h1 style={{ fontFamily: SANS, fontSize: 25, fontWeight: 400, color: '#1c1917', margin: 0, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
               Fergus Binns
             </h1>
           </a>
-          <p style={{ fontFamily: SERIF, fontSize: 13, color: '#b0b0b0', margin: '4px 0 0 0' }}>
-            {activeYear}
-          </p>
         </div>
 
         {/* Nav — fixed 80px from top, right aligned */}
@@ -198,6 +162,38 @@ export default function Gallery({ works }: { works: Work[] }) {
           <a href="/contact" style={{ fontFamily: SANS, fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9a9a9a', textDecoration: 'none' }}>Contact</a>
         </nav>
       </div>
+
+      {/* Description + nav — fixed bottom left, desktop only */}
+      {isDesktop && current && (
+        <div style={{ position: 'fixed', left: 40, bottom: footerHeight + 24, zIndex: 20, maxWidth: 220 }}>
+
+          {/* Title + year — tight line spacing */}
+          {current.title && (
+            <p style={{ margin: '0 0 10px 0', fontFamily: SANS, fontSize: isWide ? 13 : 12, fontStyle: 'italic', letterSpacing: '0.04em', color: '#6a6a6a', lineHeight: 1.15, textWrap: 'pretty' }}>
+              {formatTitle(current.title)}
+              <br />
+              <span style={{ fontStyle: 'normal' }}>{current.year}</span>
+            </p>
+          )}
+
+          {/* Medium + dimensions — tight, with photo credit */}
+          {(current.medium || current.dimensions || current.photoCredit) && (
+            <p style={{ margin: '0 0 14px 0', fontFamily: SANS, fontSize: isWide ? 13 : 12, letterSpacing: '0.04em', color: '#6a6a6a', lineHeight: 1.3 }}>
+              {current.medium && <span>{current.medium}<br /></span>}
+              {current.dimensions && <span>{current.dimensions}</span>}
+              {current.photoCredit && <><br /><span style={{ color: '#b0b0b0' }}>{current.photoCredit}</span></>}
+            </p>
+          )}
+
+          {/* PREV / NEXT */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <button onClick={prev} style={{ fontFamily: SANS, fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9a9a9a', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>Prev</button>
+            <span style={{ fontFamily: SANS, fontSize: 12, color: '#c0c0c0' }}>/</span>
+            <button onClick={next} style={{ fontFamily: SANS, fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9a9a9a', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>Next</button>
+          </div>
+
+        </div>
+      )}
 
       {/* Desktop footer */}
       <div ref={footerRef} style={{ display: isDesktop ? 'block' : 'none', position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 20, background: '#fff' }}>

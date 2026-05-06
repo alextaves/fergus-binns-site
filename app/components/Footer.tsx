@@ -14,7 +14,7 @@ export default function Footer() {
       alignItems: 'center',
       justifyContent: 'space-between',
     }}>
-      <p style={{ fontFamily: SERIF, fontSize: 13, color: '#b0b0b0', margin: 0 }}>
+      <p style={{ fontFamily: SANS, fontSize: 12, fontWeight: 400, color: '#b0b0b0', margin: 0 }}>
         Fergus Binns &copy; {new Date().getFullYear()}
       </p>
 
