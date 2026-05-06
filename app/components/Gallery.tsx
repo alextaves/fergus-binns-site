@@ -205,7 +205,6 @@ export default function Gallery({ works }: { works: Work[] }) {
         <header className="px-5 pt-8 pb-4 flex items-center justify-between">
           <div>
             <h1 style={{ fontFamily: SANS, fontSize: 20, fontWeight: 400, color: '#1c1917', margin: 0, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Fergus Binns</h1>
-            <p style={{ fontFamily: SANS, fontSize: 12, color: '#b0b0b0', margin: '3px 0 0 0' }}>{activeYear}</p>
           </div>
           <MobileMenu years={years} activeYear={activeYear} onYearChange={selectYear} />
         </header>
