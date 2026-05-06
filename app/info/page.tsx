@@ -19,8 +19,8 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 function Entry({ year, text }: { year?: string; text: string }) {
   return (
     <div style={{ display: 'flex', gap: 32, marginBottom: 8 }}>
-      <span style={{ fontFamily: SERIF, fontSize: 14, color: '#9a9a9a', minWidth: 64, flexShrink: 0 }}>{year}</span>
-      <span style={{ fontFamily: SERIF, fontSize: 14, color: '#4a4a4a', lineHeight: 1.6 }}>{text}</span>
+      <span style={{ fontFamily: SANS, fontSize: 12, color: '#9a9a9a', minWidth: 64, flexShrink: 0 }}>{year}</span>
+      <span style={{ fontFamily: SANS, fontSize: 12, color: '#4a4a4a', lineHeight: 1.6 }}>{text}</span>
     </div>
   )
 }
@@ -42,7 +42,7 @@ export default async function InfoPage() {
     <main style={{ minHeight: '100vh', background: '#fff' }}>
       {/* Nav */}
       <header style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50, background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '30px 40px 20px' }}>
-        <Link href="/" style={{ fontFamily: SERIF, fontSize: 25, fontWeight: 400, color: '#7a7a7a', textDecoration: 'none' }}>
+        <Link href="/" style={{ fontFamily: SANS, fontSize: 25, fontWeight: 400, color: '#1c1917', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
           Fergus Binns
         </Link>
         <nav style={{ display: 'flex', gap: 32 }}>
@@ -57,7 +57,7 @@ export default async function InfoPage() {
 
         {/* Bio */}
         {cv?.bio && (
-          <p style={{ fontFamily: SERIF, fontSize: 16, color: '#4a4a4a', lineHeight: 1.8, marginBottom: 56 }}>
+          <p style={{ fontFamily: SANS, fontSize: 14, color: '#4a4a4a', lineHeight: 1.8, marginBottom: 56 }}>
             {cv.bio}
           </p>
         )}
@@ -96,7 +96,7 @@ export default async function InfoPage() {
 
         {cv?.collections?.length > 0 && (
           <Section title="Collections">
-            <div style={{ fontFamily: SERIF, fontSize: 14, color: '#4a4a4a', lineHeight: 1.8 }}>
+            <div style={{ fontFamily: SANS, fontSize: 12, color: '#4a4a4a', lineHeight: 1.8 }}>
               {cv.collections.map((c: string, i: number) => (
                 <span key={i}>{c}<br /></span>
               ))}

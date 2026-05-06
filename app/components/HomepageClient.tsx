@@ -86,7 +86,7 @@ export default function HomepageClient({ imageUrl, mobileImageUrl, year, years, 
 
         {/* Name */}
         <div ref={headerRef} style={{ position: 'fixed', left: 40, top: 30, zIndex: 20 }}>
-          <h1 style={{ fontFamily: SERIF, fontSize: 25, fontWeight: 400, color: '#7a7a7a', margin: 0 }}>
+          <h1 style={{ fontFamily: SANS, fontSize: 25, fontWeight: 400, color: '#1c1917', margin: 0, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
             Fergus Binns
           </h1>
         </div>
@@ -109,7 +109,7 @@ export default function HomepageClient({ imageUrl, mobileImageUrl, year, years, 
 
         {/* Header — 40px sides to match footer */}
         <header style={{ flexShrink: 0, padding: '32px 40px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <h1 style={{ fontFamily: SERIF, fontSize: 20, fontWeight: 400, color: '#7a7a7a', margin: 0 }}>
+          <h1 style={{ fontFamily: SANS, fontSize: 20, fontWeight: 400, color: '#1c1917', margin: 0, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
             Fergus Binns
           </h1>
           <MobileMenu years={years} onNavigate={(year) => router.push(`/work?year=${year}`)} />
