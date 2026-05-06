@@ -42,10 +42,10 @@ export default async function InfoPage() {
     <main style={{ minHeight: '100vh', background: '#fff' }}>
       {/* Nav */}
       <header style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50, background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '30px 40px 20px' }}>
-        <Link href="/" style={{ fontFamily: SANS, fontSize: 25, fontWeight: 400, color: '#1c1917', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+        <Link href="/" style={{ fontFamily: SANS, fontSize: 16, fontWeight: 400, color: '#1c1917', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.04em', whiteSpace: 'nowrap' }}>
           Fergus Binns
         </Link>
-        <nav style={{ display: 'flex', gap: 32 }}>
+        <nav style={{ display: 'flex', gap: 32, marginTop: -20 }}>
           <Link href="/" style={{ fontFamily: SANS, fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9a9a9a', textDecoration: 'none' }}>Work</Link>
           <Link href="/info" style={{ fontFamily: SANS, fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#4a4a4a', textDecoration: 'none' }}>Info</Link>
           <Link href="/contact" style={{ fontFamily: SANS, fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9a9a9a', textDecoration: 'none' }}>Contact</Link>
