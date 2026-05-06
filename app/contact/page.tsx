@@ -16,7 +16,7 @@ export default function ContactPage() {
   return (
     <main style={{ minHeight: '100vh', background: '#fff', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
       <header style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50, background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '30px 40px 20px' }}>
-        <Link href="/" style={{ fontFamily: SERIF, fontSize: 25, fontWeight: 400, color: '#7a7a7a', textDecoration: 'none' }}>
+        <Link href="/" style={{ fontFamily: SANS, fontSize: 25, fontWeight: 400, color: '#1c1917', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
           Fergus Binns
         </Link>
         <nav style={{ display: 'flex', gap: 32 }}>
