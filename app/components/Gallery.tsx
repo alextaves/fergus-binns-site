@@ -136,11 +136,6 @@ export default function Gallery({ works }: { works: Work[] }) {
               )}
 
 
-              {current && (
-                <p style={{ position: 'absolute', top: 'calc(100% + 12px)', right: 0, margin: 0, fontFamily: SANS, fontSize: 12, letterSpacing: '0.04em', color: '#6a6a6a', lineHeight: 1.15, whiteSpace: 'nowrap' }}>
-                  {index + 1}/{yearWorks.length}
-                </p>
-              )}
             </div>
           </div>
 
@@ -163,9 +158,9 @@ export default function Gallery({ works }: { works: Work[] }) {
         </nav>
       </div>
 
-      {/* Description + nav — fixed bottom left, desktop only */}
+      {/* Description — fixed right margin, aligned with nav, desktop only */}
       {isDesktop && current && (
-        <div style={{ position: 'fixed', left: 40, bottom: footerHeight + 24, zIndex: 20, maxWidth: 220, background: '#fff', padding: '12px 14px', marginLeft: -14, marginBottom: -12 }}>
+        <div style={{ position: 'fixed', right: 40, bottom: footerHeight + 24, zIndex: 20, maxWidth: 220, background: '#fff', padding: '12px 14px', textAlign: 'right' }}>
 
           {/* Title + year — tight line spacing */}
           {current.title && (
@@ -185,8 +180,13 @@ export default function Gallery({ works }: { works: Work[] }) {
             </p>
           )}
 
+          {/* Counter */}
+          <p style={{ margin: '12px 0 14px 0', fontFamily: SANS, fontSize: 12, letterSpacing: '0.04em', color: '#b0b0b0', lineHeight: 1.15 }}>
+            {index + 1}/{yearWorks.length}
+          </p>
+
           {/* PREV / NEXT */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 8 }}>
             <button onClick={prev} style={{ fontFamily: SANS, fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9a9a9a', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>Prev</button>
             <span style={{ fontFamily: SANS, fontSize: 12, color: '#c0c0c0' }}>/</span>
             <button onClick={next} style={{ fontFamily: SANS, fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9a9a9a', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>Next</button>
