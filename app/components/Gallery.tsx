@@ -165,7 +165,7 @@ export default function Gallery({ works }: { works: Work[] }) {
 
       {/* Description + nav — fixed bottom left, desktop only */}
       {isDesktop && current && (
-        <div style={{ position: 'fixed', left: 40, bottom: footerHeight + 24, zIndex: 20, maxWidth: 220 }}>
+        <div style={{ position: 'fixed', left: 40, bottom: footerHeight + 24, zIndex: 20, maxWidth: 220, background: '#fff', padding: '12px 14px', marginLeft: -14, marginBottom: -12 }}>
 
           {/* Title + year — tight line spacing */}
           {current.title && (
