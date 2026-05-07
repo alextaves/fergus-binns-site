@@ -28,7 +28,7 @@ export default function WorkDropdown({ years, activeYear, onChange, footerHeight
       </button>
 
       {open && (
-        <div style={{ position: 'absolute', right: 0, top: 'calc(100% + 12px)', background: 'white', zIndex: 50, paddingLeft: 15, paddingRight: 15, maxHeight: `calc(100vh - 80px - ${footerHeight}px)`, overflowY: 'auto' }}>
+        <div style={{ position: 'absolute', right: 0, top: 'calc(100% + 12px)', background: 'rgba(255,255,255,0.82)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)', zIndex: 100, paddingLeft: 15, paddingRight: 15 }}>
           {years.map(year => (
             <button
               key={year}

@@ -151,7 +151,7 @@ export default function Gallery({ works }: { works: Work[] }) {
         </div>
 
         {/* Nav — fixed 80px from top, right aligned */}
-        <nav style={{ position: 'fixed', top: 25, right: 40, zIndex: 20, display: 'flex', alignItems: 'center', gap: 32 }}>
+        <nav style={{ position: 'fixed', top: 25, right: 40, zIndex: 30, display: 'flex', alignItems: 'center', gap: 32 }}>
           <WorkDropdown years={years} activeYear={activeYear} onChange={selectYear} footerHeight={footerHeight} />
           <a href="/info" style={{ fontFamily: SANS, fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9a9a9a', textDecoration: 'none' }}>Info</a>
           <a href="/contact" style={{ fontFamily: SANS, fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9a9a9a', textDecoration: 'none' }}>Contact</a>
@@ -160,7 +160,7 @@ export default function Gallery({ works }: { works: Work[] }) {
 
       {/* Description — fixed right margin, aligned with nav, desktop only */}
       {isDesktop && current && (
-        <div style={{ position: 'fixed', right: 40, bottom: footerHeight + 24, zIndex: 20, maxWidth: 220, background: '#fff', padding: '12px 14px', textAlign: 'right' }}>
+        <div style={{ position: 'fixed', right: 40, bottom: footerHeight + 24, zIndex: 20, maxWidth: 220, background: 'rgba(255,255,255,0.82)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)', padding: '12px 14px', textAlign: 'right' }}>
 
           {/* Title + year — tight line spacing */}
           {current.title && (
