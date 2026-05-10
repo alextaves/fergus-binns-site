@@ -208,7 +208,7 @@ export default function Gallery({ works }: { works: Work[] }) {
           </div>
           <MobileMenu years={years} activeYear={activeYear} onYearChange={selectYear} />
         </header>
-        <div className="px-5 pb-16 flex flex-col gap-10" style={{ paddingTop: 20 }}>
+        <div className="px-5 pb-16 flex flex-col" style={{ paddingTop: 20, gap: 60 }}>
           {yearWorks.map((work) => {
             const url = work.image ? urlFor(work.image).width(800).fit('max').url() : null
             return (
