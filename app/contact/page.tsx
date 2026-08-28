@@ -14,7 +14,13 @@ const SANS = 'Helvetica Neue, Helvetica, Arial, sans-serif'
 
 export default function ContactPage() {
   return (
-    <main style={{ minHeight: '100vh', background: '#fff', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+    // Padding reserves the fixed header and footer so neither can sit on top of
+    // the form. The vertical centring is done with auto margins on the child, NOT
+    // justifyContent: when the form is taller than the viewport — any phone —
+    // centring pushes the overflow above the scroll origin where it cannot be
+    // reached, and the fixed footer covers what is left at the bottom. Auto
+    // margins collapse to zero instead of going negative, so it stays scrollable.
+    <main style={{ minHeight: '100vh', background: '#fff', display: 'flex', flexDirection: 'column', paddingTop: 100, paddingBottom: 84, boxSizing: 'border-box' }}>
       <header style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50, background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '30px 40px 20px' }}>
         <Link href="/" style={{ fontFamily: SANS, fontSize: 25, fontWeight: 400, color: '#1c1917', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
           Fergus Binns
@@ -26,7 +32,7 @@ export default function ContactPage() {
         </nav>
       </header>
 
-      <div style={{ maxWidth: 680, width: '100%', margin: '0 auto', padding: '0 40px' }}>
+      <div style={{ maxWidth: 680, width: '100%', margin: 'auto', padding: '0 40px', boxSizing: 'border-box' }}>
         <ContactForm />
       </div>
       <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, background: '#fff' }}>
