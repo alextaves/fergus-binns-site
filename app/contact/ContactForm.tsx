@@ -2,6 +2,35 @@
 
 import { useState, useEffect, useRef } from 'react'
 
+const SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? ''
+
+// Loaded once for the life of the page and never taken away again. Explicit
+// render, so the widget is created for the node we actually have rather than
+// relying on Turnstile's one-time sweep for .cf-turnstile elements.
+const SCRIPT_ID = 'cf-turnstile-api'
+function loadTurnstile(): Promise<void> {
+  if (typeof window === 'undefined') return Promise.resolve()
+  if (window.turnstile) return Promise.resolve()
+  if (window.__turnstileReady) return window.__turnstileReady
+  window.__turnstileReady = new Promise<void>((resolve, reject) => {
+    const existing = document.getElementById(SCRIPT_ID) as HTMLScriptElement | null
+    if (existing) {
+      existing.addEventListener('load', () => resolve(), { once: true })
+      existing.addEventListener('error', () => reject(), { once: true })
+      return
+    }
+    const script = document.createElement('script')
+    script.id = SCRIPT_ID
+    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'
+    script.async = true
+    script.defer = true
+    script.onload = () => resolve()
+    script.onerror = () => reject()
+    document.head.appendChild(script)
+  })
+  return window.__turnstileReady
+}
+
 const SERIF = 'var(--font-garamond), Georgia, serif'
 const SANS = 'Helvetica Neue, Helvetica, Arial, sans-serif'
 
@@ -30,22 +59,54 @@ const inputStyle = {
 
 export default function ContactForm() {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
+  const [token, setToken] = useState('')
+  const [captchaFailed, setCaptchaFailed] = useState(false)
   const widgetRef = useRef<HTMLDivElement>(null)
+  const widgetIdRef = useRef<string | null>(null)
 
   useEffect(() => {
-    const script = document.createElement('script')
-    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js'
-    script.async = true
-    script.defer = true
-    document.head.appendChild(script)
-    return () => { document.head.removeChild(script) }
+    let cancelled = false
+
+    loadTurnstile()
+      .then(() => {
+        if (cancelled || !window.turnstile || !widgetRef.current) return
+        if (widgetIdRef.current) return          // already rendered into this node
+        widgetIdRef.current = window.turnstile.render(widgetRef.current, {
+          sitekey: SITE_KEY,
+          callback: (t) => { setToken(t); setCaptchaFailed(false) },
+          'error-callback': () => { setToken(''); setCaptchaFailed(true) },
+          'timeout-callback': () => { setToken(''); setCaptchaFailed(true) },
+          'expired-callback': () => { setToken('') },
+        }) ?? null
+      })
+      .catch(() => { if (!cancelled) setCaptchaFailed(true) })
+
+    return () => {
+      cancelled = true
+      // Remove the WIDGET, never the script. Turnstile keeps a global once the
+      // script has run, so deleting the tag and re-adding it on the next visit
+      // does not re-run the auto-render pass — the widget silently never appears
+      // and the form posts with no token. That was the bug: land on /contact and
+      // it worked, arrive from another page and Send did nothing at all.
+      const id = widgetIdRef.current
+      if (id && window.turnstile?.remove) {
+        try { window.turnstile.remove(id) } catch { /* already gone */ }
+      }
+      widgetIdRef.current = null
+    }
   }, [])
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    setStatus('sending')
     const form = e.currentTarget
+
+    // Without this the form posted an empty token, the API answered 400 and the
+    // button appeared dead — no message, nothing. Fail loudly instead.
+    if (!token) { setCaptchaFailed(true); return }
+
+    setStatus('sending')
     const data = new FormData(form)
+    data.set('cf-turnstile-response', token)
 
     try {
       const res = await fetch('/api/contact', {
@@ -55,9 +116,9 @@ export default function ContactForm() {
       if (res.ok) {
         setStatus('sent')
         form.reset()
-        // Reset Turnstile widget
-        if (window.turnstile && widgetRef.current) {
-          window.turnstile.reset(widgetRef.current)
+        setToken('')
+        if (window.turnstile && widgetIdRef.current) {
+          window.turnstile.reset(widgetIdRef.current)
         }
       } else {
         setStatus('error')
@@ -98,11 +159,16 @@ export default function ContactForm() {
         />
       </div>
 
-      <div
-        ref={widgetRef}
-        className="cf-turnstile"
-        data-sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
-      />
+      <div>
+        {/* No cf-turnstile class: that is the marker for Turnstile's automatic
+            sweep, and we render into this node ourselves. Both would double up. */}
+        <div ref={widgetRef} style={{ minHeight: 65 }} />
+        {captchaFailed && (
+          <p style={{ fontFamily: SERIF, fontSize: 13, color: '#c0a0a0', margin: '8px 0 0' }}>
+            The spam check could not load. Please refresh the page and try again.
+          </p>
+        )}
+      </div>
 
       {status === 'error' && (
         <p style={{ fontFamily: SERIF, fontSize: 13, color: '#c0a0a0', margin: 0 }}>
