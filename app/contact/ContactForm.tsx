@@ -176,7 +176,9 @@ export default function ContactForm() {
         </p>
       )}
 
-      <div>
+      {/* alignItems flex-start, or the column stretches the button to full width
+          and its label centres — everything else on this form is left aligned. */}
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 18 }}>
         <button
           type="submit"
           disabled={status === 'sending'}
@@ -194,6 +196,22 @@ export default function ContactForm() {
         >
           {status === 'sending' ? 'Sending…' : 'Send'}
         </button>
+
+        {/* Always visible, not only on failure. The captcha is a single point of
+            failure on the only contact route — if it cannot load, or a visitor
+            simply prefers email, there has to be a way through that does not
+            depend on it. */}
+        <p style={{ fontFamily: SANS, fontSize: 10, letterSpacing: '0.14em',
+                    textTransform: 'uppercase', color: '#b0b0b0', margin: 0 }}>
+          or email{' '}
+          <a
+            href="mailto:fergus@fergusbinns.com"
+            style={{ color: '#4a4a4a', textDecoration: 'none',
+                     borderBottom: '1px solid #e0e0e0' }}
+          >
+            fergus@fergusbinns.com
+          </a>
+        </p>
       </div>
     </form>
   )
