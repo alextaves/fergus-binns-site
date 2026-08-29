@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import ContactForm from './ContactForm'
 import Footer from '../components/Footer'
+import PageMenu from '../components/PageMenu'
 
 export const metadata: Metadata = {
   title: 'Contact',
@@ -58,25 +59,22 @@ export default function ContactPage() {
           white-space: nowrap;
         }
         .contact-nav { display: flex; gap: 32px; white-space: nowrap; }
+        .contact-menu { display: none; }
         .contact-nav a { font-size: 12px; }
         .contact-body {
           max-width: 680px;
           width: 100%;
           margin: auto;
-          padding: var(--hdr-pt) var(--gut) var(--hdr-pb);
+          padding: 0 var(--gut);
           box-sizing: border-box;
         }
         @media (max-width: 600px) {
-          .contact-main { --hdr: 64px; --hdr-pt: 18px; --hdr-pb: 12px; --gut: 22px; }
-          .contact-logo { font-size: 17px; }
-          .contact-nav { gap: 15px; }
-          .contact-nav a { font-size: 10px; letter-spacing: 0.08em; }
-        }
-        @media (max-width: 360px) {
-          .contact-main { --hdr: 60px; --hdr-pt: 16px; --hdr-pb: 11px; --gut: 16px; }
-          .contact-logo { font-size: 15px; }
-          .contact-nav { gap: 11px; }
-          .contact-nav a { font-size: 9px; letter-spacing: 0.06em; }
+          .contact-main { --hdr: 78px; --hdr-pt: 32px; --hdr-pb: 16px; }
+          /* 20px/30px, 32px top, 40px gutter: identical to the homepage mobile
+             header, so the logo and hamburger land on the same pixels. */
+          .contact-logo { font-size: 20px; line-height: 30px; }
+          .contact-nav { display: none; }
+          .contact-menu { display: flex; }
         }
       `}</style>
 
@@ -89,6 +87,9 @@ export default function ContactPage() {
           <Link href="/info" style={{ fontFamily: SANS, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9a9a9a', textDecoration: 'none' }}>Info</Link>
           <Link href="/contact" style={{ fontFamily: SANS, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#4a4a4a', textDecoration: 'none' }}>Contact</Link>
         </nav>
+        <div className="contact-menu">
+          <PageMenu current="contact" />
+        </div>
       </header>
 
       <div className="contact-body">
