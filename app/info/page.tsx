@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Footer from '../components/Footer'
+import PageMenu from '../components/PageMenu'
 import { getCV } from '@/sanity/lib/queries'
 
 const SERIF = 'var(--font-garamond), Georgia, serif'
@@ -40,22 +41,52 @@ export default async function InfoPage() {
 
   return (
     <main style={{ minHeight: '100vh', background: '#fff' }}>
-      {/* Nav */}
-      <header style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50, background: '#fff', display: 'flex', justifyContent: 'flex-end', padding: '30px 40px 20px' }}>
-        <nav style={{ display: 'flex', gap: 32 }}>
+      <style>{`
+        .info-header {
+          position: fixed;
+          top: 0; left: 0; right: 0;
+          z-index: 50;
+          background: #fff;
+          box-sizing: border-box;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 16px;
+          padding: 30px 40px 20px;
+        }
+        /* The name lives in the bar at every width, as it does on contact.
+           It used to sit in the page body, which meant it appeared twice once
+           the mobile header gained a logo. */
+        .info-logo { display: block; font-size: 25px; white-space: nowrap; }
+        .info-nav { display: flex; gap: 32px; white-space: nowrap; }
+        .info-menu { display: none; }
+        .info-body { max-width: 680px; margin: 0 auto; padding: 100px 40px 80px; box-sizing: border-box; }
+        @media (max-width: 600px) {
+          /* 20px/30px, 32px top, 40px gutter: identical to the homepage mobile
+             header, so the logo and hamburger land on the same pixels. */
+          .info-header { height: 78px; padding: 32px 40px 16px; }
+          .info-logo { font-size: 20px; line-height: 30px; }
+          .info-nav { display: none; }
+          .info-menu { display: flex; }
+        }
+      `}</style>
+
+      <header className="info-header">
+        <Link href="/" className="info-logo" style={{ fontFamily: SANS, fontWeight: 400, color: '#1c1917', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+          Fergus Binns
+        </Link>
+        <nav className="info-nav">
           <Link href="/" style={{ fontFamily: SANS, fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9a9a9a', textDecoration: 'none' }}>Work</Link>
           <Link href="/info" style={{ fontFamily: SANS, fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#4a4a4a', textDecoration: 'none' }}>Info</Link>
           <Link href="/contact" style={{ fontFamily: SANS, fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9a9a9a', textDecoration: 'none' }}>Contact</Link>
         </nav>
+        <div className="info-menu">
+          <PageMenu current="info" />
+        </div>
       </header>
 
       {/* Content */}
-      <div style={{ maxWidth: 680, margin: '0 auto', padding: '100px 40px 80px' }}>
-
-        {/* Name */}
-        <Link href="/" style={{ display: 'block', fontFamily: SANS, fontSize: 16, fontWeight: 400, color: '#1c1917', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 20 }}>
-          Fergus Binns
-        </Link>
+      <div className="info-body">
 
         {/* Bio */}
         {cv?.bio && (
